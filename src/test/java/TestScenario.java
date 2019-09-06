@@ -1,7 +1,12 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -15,6 +20,8 @@ import utils.MockDataUtils;
 
 public class TestScenario {
     private WebDriver driver;
+    private ChromeOptions options;
+    private DesiredCapabilities dc = DesiredCapabilities.chrome();
     private HomePage homePage;
     private OldLetterPage oldLetterPage;
     private UserAccountPage userAccountPage;
@@ -25,7 +32,13 @@ public class TestScenario {
     @BeforeClass()
     private void initBrowser() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        options = new ChromeOptions();
+        dc.setCapability(ChromeOptions.CAPABILITY, options);
+        try {
+            driver = new RemoteWebDriver(new URL("http://10.6.74.133:4450/wd/hub"), dc);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
@@ -40,7 +53,7 @@ public class TestScenario {
     @Test(description = "check if login to mail.ru is successful")
     public void loginToMailBoxTest() {
 
-       homePage.open().fillLoginField(TestData.LOGIN_NAME)
+       homePage.open().fillLoginField(TestData.LOGIN_NAME).clickEnterPassword()
                 .fillPasswordField(TestData.PASSWORD).startUserSession();
 
         String authorizationData = userAccountPage.checkAutorisationData();

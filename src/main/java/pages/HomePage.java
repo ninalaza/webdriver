@@ -15,6 +15,9 @@ public class HomePage extends AbstractPage {
     @FindBy (xpath = "//label[@id='mailbox:submit']")
     WebElement goButton;
 
+    @FindBy (xpath = "//input[@value='Ввести пароль']")
+    WebElement enterPasswordButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -32,6 +35,11 @@ public class HomePage extends AbstractPage {
 
     public HomePage fillPasswordField(String query) {
         passwordField.sendKeys(query);
+        return this;
+    }
+
+    public HomePage clickEnterPassword() {
+        enterPasswordButton.click();
         return this;
     }
 

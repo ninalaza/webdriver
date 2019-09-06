@@ -50,7 +50,7 @@ public class UserAccountPage extends AbstractPage {
 
     public void tapOnDraftButton() {
        waitUntilElementClickable(draftButton);
-        draftButton.click();
+       draftButton.click();
     }
 
     public void tapOnSentButton() {
@@ -70,6 +70,7 @@ public class UserAccountPage extends AbstractPage {
     }
 
     public boolean isEmailWithSubjectExists(String mailSubject) {
+        waitUntilElementClickable(datasetEmail);
         String xpath = String.format(".//span[@class='ll-sj__normal'][text()='%s']", mailSubject);
         List mails = datasetEmail.findElements(By.xpath(xpath));
         return mails.size() > 0;

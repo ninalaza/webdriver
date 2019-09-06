@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -21,7 +22,8 @@ public class AbstractPage {
     }
 
     protected void waitUntilElementClickable(WebElement element) {
-        new WebDriverWait(driver, WAIT_FOR_ELEMENT_TIMEOUT_SECONDS).ignoring(StaleElementReferenceException.class).until(
+        new WebDriverWait(driver, WAIT_FOR_ELEMENT_TIMEOUT_SECONDS).ignoring(StaleElementReferenceException.class)
+                .ignoring(ElementClickInterceptedException.class).until(
                 ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(element)));
 
     }

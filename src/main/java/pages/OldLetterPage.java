@@ -39,6 +39,7 @@ public class OldLetterPage extends AbstractPage {
     }
 
     public boolean isTextBodyExistsInMessage(String mailBody) {
+        waitForElementVisible(mailEditor);
         String xpath = String.format(".//div[contains(text(), '%s')]", mailBody);
         List texts = mailEditor.findElements(By.xpath(xpath));
 
@@ -46,6 +47,7 @@ public class OldLetterPage extends AbstractPage {
     }
 
     public  void sendMail(){
+        waitUntilElementClickable(sendButton);
         sendButton.click();
     }
 
